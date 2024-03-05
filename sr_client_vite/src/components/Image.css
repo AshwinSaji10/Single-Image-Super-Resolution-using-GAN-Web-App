@@ -7,3 +7,21 @@
 .output-image{
     padding:5%;
 }
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .arrow-animation {
+    width: 24px;
+    height: 24px;
+    border: 2px solid transparent;
+    border-color: #555 transparent transparent transparent;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+  }

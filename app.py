@@ -67,13 +67,13 @@ def upload_image():
 
     file = request.files['file']
 
-    print('Hello world!', file=sys.stderr)
+    # print('Hello world!', file=sys.stderr)
 
     img = Image.open(file)
     img = img.convert("RGB")
 
     im_x,im_y=img.size
-    print("size =",im_x,im_y)
+    # print("size =",im_x,im_y)
     # im_x=128
     # im_y=128
     

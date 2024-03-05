@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './Image.css'
 
+// const sr_placeholder = "placeholder1.png";
+
 function Image() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
+  const [downloadEnabled, setDownloadEnabled] = useState(false);
 
   const fileSelectedHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -19,6 +22,7 @@ function Image() {
         // console.log('image : '+response.data.image)
         //const imageUrl = URL.createObjectURL(response.data.image);
         setProcessedImage(response.data.image);
+        setDownloadEnabled(true);
       })
       .catch((error) => {
         console.error("Error uploading file: ", error);
@@ -43,7 +47,7 @@ function Image() {
         {/* {processedImage && <img src={processedImage} alt="Processed" />} */}
         <div className="output-image">
           <img src={`data:image/jpeg;base64,${processedImage}`}  alt="Processed" />
-          <button onClick={downloadImageHandler}>Download</button>
+          <button onClick={downloadImageHandler} disabled={!downloadEnabled}>Download</button>
         </div>
     </div>
   );
