@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import './Image.css'
 
-// const sr_placeholder = "placeholder1.png";
+const placeholderImage = "/placeholder1.png";
 
 function Image() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -46,7 +46,11 @@ function Image() {
         <button onClick={fileUploadHandler}>Upload</button>
         {/* {processedImage && <img src={processedImage} alt="Processed" />} */}
         <div className="output-image">
-          <img src={`data:image/jpeg;base64,${processedImage}`}  alt="Processed" />
+        {processedImage ? 
+            <img src={`data:image/jpeg;base64,${processedImage}`} alt="Processed Image" />
+            :
+            <img src={placeholderImage} alt="Placeholder Image" />
+          }
           <button onClick={downloadImageHandler} disabled={!downloadEnabled}>Download</button>
         </div>
     </div>
