@@ -1,7 +1,11 @@
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 import "./App.css";
-import Image from '/src/components/Image';
+import { BrowserRouter as Router,Route,Routes} from 'react-router-dom';
+import Landing from "/src/components/Landing";
+import Home from "/src/components/Home";
+import Register from "/src/components/Register";
+import ForgetPassword from "/src/components/ForgetPassword";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -35,12 +39,16 @@ function App() {
   //   };
 
   return (
-    <div className="App">
-        <div className="App-header">
-          <h1>Single Image Super Resolution using GAN</h1>
-          <Image/>
-        </div>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Landing/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/forget-password" element={<ForgetPassword/>} />
+          <Route path="/home" element={<Home/>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
