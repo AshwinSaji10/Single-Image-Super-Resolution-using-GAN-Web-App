@@ -13,6 +13,20 @@ import io
 from base64 import b64encode
 from json import dumps
 
+import sqlite3
+
+def create_user_table():
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  username TEXT UNIQUE NOT NULL,
+                  password TEXT NOT NULL)''')
+    conn.commit()
+    conn.close()
+
+create_user_table()
+
 def res_block(ip):
 
     res_model = Conv2D(64, (3,3), padding = "same")(ip)
@@ -151,6 +165,41 @@ def upload_image():
     # return json_data
     # # return {'image' : 'sdfsdf'}
     """
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json
+    username = data.get('email')
+    password = data.get('password')
+
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    try:
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        return jsonify({'message': 'User registered successfully'})
+    except sqlite3.IntegrityError:
+        return jsonify({'error': 'Username already exists'})
+    finally:
+        conn.close()
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('email')
+    password = data.get('password')
+
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+    user = c.fetchone()
+    conn.close()
+
+    if user:
+        return jsonify({'message': 'Login successful'})
+    else:
+        return jsonify({'error': 'Invalid username or password'}), 401
+      
 if __name__ == '__main__':
     app.run(debug=True)
 

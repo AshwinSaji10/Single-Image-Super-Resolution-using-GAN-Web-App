@@ -6,6 +6,7 @@ import Landing from "/src/components/Landing";
 import Home from "/src/components/Home";
 import Register from "/src/components/Register";
 import ForgetPassword from "/src/components/ForgetPassword";
+import Notfound from "/src/components/Notfound";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -46,6 +47,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forget-password" element={<ForgetPassword/>} />
           <Route path="/home" element={<Home/>} />
+          <Route path="*" element={<Notfound/>} />
         </Routes>
       </div>
     </Router>

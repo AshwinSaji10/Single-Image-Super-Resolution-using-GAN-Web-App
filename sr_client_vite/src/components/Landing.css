@@ -1,0 +1,12 @@
+.Landing
+{
+    /* display:flex;
+    flex-direction: column;
+    justify-content: space-around; */
+}
+
+.links
+{
+    display:flex;
+    flex-direction: column;
+}
