@@ -3,6 +3,14 @@
     /* display:flex;
     flex-direction: column;
     justify-content: space-around; */
+    display:flex;
+    /* margin: 50px; */
+    /* align-items: center; */
+    flex-direction: row;
+    margin:5%;
+    margin-top: 7%;
+    justify-content: space-evenly;
+    gap:30px;
 }
 
 .links
@@ -10,3 +18,32 @@
     display:flex;
     flex-direction: column;
 }
+
+
+.formbox-container
+{
+    display: flex;
+    /* background-color: wheat;
+    color: black; */
+    flex-direction: column;
+    /* justify-content: space-around; */
+    gap:10px;
+    align-items: center;
+    padding:100px;
+    /* max-width: 400px; */
+    /* padding: 100px; */
+    border-radius: 10px;
+    border: 1px solid white;
+
+}
+
+.carousel-container
+{
+    display:flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding: 100px;
+
+}
+

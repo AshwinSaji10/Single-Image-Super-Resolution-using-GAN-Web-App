@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import './Image.css'
+import "./Image.css";
 
 const placeholderImage = "/placeholder1.png";
 
 function Image() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileURL, setSelectedFileURL] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
   const [downloadEnabled, setDownloadEnabled] = useState(false);
 
   const fileSelectedHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    setSelectedFileURL(URL.createObjectURL(file));
   };
-
 
   const fileUploadHandler = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    axios.post("http://127.0.0.1:5000/image", formData,{ responseType: 'json' })
+    axios
+      .post("http://127.0.0.1:5000/image", formData, { responseType: "json" })
       .then((response) => {
         // console.log('image : '+response.data.image)
         //const imageUrl = URL.createObjectURL(response.data.image);
@@ -31,28 +34,49 @@ function Image() {
 
   const downloadImageHandler = () => {
     // Create a temporary anchor element
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = `data:image/jpeg;base64,${processedImage}`;
-    link.setAttribute('download', 'processed_image.png');
+    link.setAttribute("download", "processed_image.png");
     document.body.appendChild(link);
     link.click();
     // Remove the temporary anchor element
     document.body.removeChild(link);
   };
 
-  return(
+  return (
     <div className="Image-section">
-        <input type="file" onChange={fileSelectedHandler} />
-        <button onClick={fileUploadHandler}>Upload</button>
-        {/* {processedImage && <img src={processedImage} alt="Processed" />} */}
-        <div className="output-image">
-        {processedImage ? 
-            <img src={`data:image/jpeg;base64,${processedImage}`} alt="Processed Image" />
-            :
-            <img src={placeholderImage} alt="Placeholder Image" />
-          }
-          <button onClick={downloadImageHandler} disabled={!downloadEnabled}>Download</button>
+      <div className="original-image">
+        <div className="image-container">
+          {!selectedFileURL && (
+              <img src={placeholderImage} alt="Placeholder Image" />
+          )}
+          {selectedFileURL && (
+              <img src={selectedFileURL} alt="Selected File" />
+              // {/* <p>{selectedFile.name}</p> */}
+          )}
         </div>
+        <input type="file" className="file-selector" onChange={fileSelectedHandler} />
+      </div>
+      <div className="btn-section">
+        <button onClick={fileUploadHandler}>
+          Upscale
+        </button>
+      </div>
+      <div className="processed-image">
+        <div className="image-container">
+          {processedImage ? (
+            <img
+              src={`data:image/jpeg;base64,${processedImage}`}
+              alt="Processed Image"
+            />
+          ) : (
+            <img src={placeholderImage} alt="Placeholder Image" />
+          )}
+        </div>
+        <button className="btn" onClick={downloadImageHandler} disabled={!downloadEnabled}>
+          Download
+        </button>
+      </div>
     </div>
   );
 }

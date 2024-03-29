@@ -1,0 +1,45 @@
+.home-page
+{
+    display: flex;
+    flex-direction: row;
+    gap:100px;
+}
+/* .navigation-container
+{
+    display:flex;
+    min-height: 97vh;
+    min-width: auto;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid white;
+    align-items: center;
+    justify-content: center;
+    padding: 100px;
+} */
+
+.sidebar-container
+{
+    
+}
+.app-container
+{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    gap:50px;
+}
+
+.app-header
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 270px;
+    margin-bottom: 50px;
+}
+
+.btn
+{
+    width:100px;
+    height:20px;
+}

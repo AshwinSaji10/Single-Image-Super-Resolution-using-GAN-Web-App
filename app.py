@@ -1,9 +1,11 @@
-from flask import Flask, jsonify,request
+from flask import Flask, jsonify,request,session
 from flask_cors import CORS
+from flask_session import Session
 from PIL import Image
 import numpy as np
 import cv2
 import tensorflow as tf
+import hashlib
 import sys
 # from keras.models import load_model
 from keras import Model
@@ -26,6 +28,19 @@ def create_user_table():
     conn.close()
 
 create_user_table()
+
+def create_images_table():
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS images
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  user_id INTEGER NOT NULL,
+                  image_data TEXT NOT NULL,
+                  FOREIGN KEY(user_id) REFERENCES users(id))''')
+    conn.commit()
+    conn.close()
+
+create_images_table()
 
 def res_block(ip):
 
@@ -68,6 +83,9 @@ def create_gen(gen_ip, num_res_block):
 
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = '%@6aq47jjB6D!A9h'
+Session(app)
 CORS(app)
 
 # Load your model
@@ -82,6 +100,8 @@ def upload_image():
     file = request.files['file']
 
     # print('Hello world!', file=sys.stderr)
+
+    # user_id = session['user_id']
 
     img = Image.open(file)
     img = img.convert("RGB")
@@ -142,29 +162,9 @@ def upload_image():
     return json_data
     
 
-    """Code to Just display a random image
-    # img=Image.open("sample.png")
-  
-    # img_bytes = io.BytesIO()
-    # img.save(img_bytes, "png")
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-    # base64_bytes = b64encode(img_bytes.getvalue())
-
-    # # third: decode these bytes to text
-    # # result: string (in utf-8)
-    # base64_string = base64_bytes.decode('utf-8')
-
-    # # optional: doing stuff with the data
-    # # result here: some dict
-    # raw_data = {'image': base64_string}
-
-    # # now: encoding the data to json
-    # # result: string
-    # json_data = dumps(raw_data, indent=2)
-    
-    # return json_data
-    # # return {'image' : 'sdfsdf'}
-    """
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -172,10 +172,12 @@ def register():
     username = data.get('email')
     password = data.get('password')
 
+    hashed_password = hash_password(password)
+
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
         conn.commit()
         return jsonify({'message': 'User registered successfully'})
     except sqlite3.IntegrityError:
@@ -191,14 +193,29 @@ def login():
 
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+    c.execute("SELECT * FROM users WHERE username = ?", (username,))
     user = c.fetchone()
-    conn.close()
-
+    
     if user:
-        return jsonify({'message': 'Login successful'})
-    else:
-        return jsonify({'error': 'Invalid username or password'}), 401
+        stored_hashed_password = user[2]  # Assuming the hashed password is stored in the third column
+        
+        entered_hashed_password = hash_password(password)
+        
+        if stored_hashed_password == entered_hashed_password:
+            session['user_id'] = user[0]  # Assuming the user ID is stored in the first column
+            return jsonify({'message': 'Login successful'})
+    
+    return jsonify({'error': 'Invalid username or password'}), 401
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    if 'user_id' in session:
+        session.pop('user_id')  # Remove user ID from session
+    
+    # Optionally, you can clear the entire session if needed
+    session.clear()  # Clear all session data
+    
+    return jsonify({'message': 'Logout successful'})
       
 if __name__ == '__main__':
     app.run(debug=True)
