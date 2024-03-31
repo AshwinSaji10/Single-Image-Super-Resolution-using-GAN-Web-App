@@ -8,23 +8,23 @@
     padding:5%;
 }
 
-@keyframes rotate {
+/* @keyframes rotate {
     from {
       transform: rotate(0deg);
     }
     to {
       transform: rotate(360deg);
     }
-  }
+  } */
   
-  .arrow-animation {
+  /* .arrow-animation {
     width: 24px;
     height: 24px;
     border: 2px solid transparent;
     border-color: #555 transparent transparent transparent;
     border-radius: 50%;
     animation: rotate 1s linear infinite;
-  }
+  } */
 
   .Image-section
   {
@@ -56,6 +56,11 @@
     gap:25px;
     align-items: center;
   }
+
+  .processed-image button
+  {
+    border-radius: 30px;
+  }
  
 
   .btn
@@ -67,6 +72,19 @@
   .btn-section
   {
     margin-top: auto;
+    display:flex;
+    flex-direction: column;
+  }
+
+  .btn-section img
+  {
+    height: 100px;
+    width:100px;
+  }
+  .btn-section button
+  {
+    height:35px;
+    width:120px;
   }
 
   .input-image,.output-image{

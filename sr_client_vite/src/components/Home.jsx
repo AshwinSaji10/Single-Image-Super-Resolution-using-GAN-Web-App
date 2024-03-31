@@ -1,20 +1,26 @@
 import "./Home.css";
 import Image from "./Image";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import Storage from "./Storage";
 
+const ProfileIcon = "/user_icon.png";
+
 function Home() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [currentComponent, setCurrentComponent] = useState(null);
 
+    const userName = location.state ? location.state.userName : "";
+
     const handleLogout = async () => {
         try {
-            await axios.get("/logout");
+            const response = await axios.post("http://127.0.0.1:5000/logout");
             // Redirect to the login page
+            console.log(response.data);
             navigate("/", { replace: true });
         } catch (error) {
             console.error("Logout error:", error);
@@ -34,9 +40,17 @@ function Home() {
             <div className="app-container">
                 <div className="app-header">
                     <h1>Single Image Super Resolution using GAN</h1>
-                    <button onClick={handleLogout}>Logout</button>
+                    <div className="user-section">
+                        <div className="user-section-header">
+                            <h2>{userName}</h2>
+                            <button onClick={handleLogout}>Logout</button>
+                        </div>
+                        <div className="user-section-image">
+                            <img src={ProfileIcon} alt="Profile Icon" />
+                        </div>
+                    </div>
                 </div>
-                {currentComponent === "view" ? <Storage/> : <Image/>}
+                {currentComponent === "view" ? <Storage userName={userName}/> : <Image userName={userName}/>}
             </div>
         </div>
     );

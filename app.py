@@ -1,17 +1,19 @@
-from flask import Flask, jsonify,request,session
+from flask import Flask, jsonify,request
 from flask_cors import CORS
-from flask_session import Session
+# from flask import session
+# from flask_session import Session
 from PIL import Image
 import numpy as np
 import cv2
 import tensorflow as tf
 import hashlib
-import sys
+# import sys
 # from keras.models import load_model
 from keras import Model
 from keras.layers import Input,Conv2D, PReLU,BatchNormalization,UpSampling2D,add
 import io
 # import os
+import base64
 from base64 import b64encode
 from json import dumps
 
@@ -35,12 +37,15 @@ def create_images_table():
     c.execute('''CREATE TABLE IF NOT EXISTS images
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   user_id INTEGER NOT NULL,
-                  image_data TEXT NOT NULL,
+                  image_data BLOB NOT NULL,
                   FOREIGN KEY(user_id) REFERENCES users(id))''')
     conn.commit()
     conn.close()
 
 create_images_table()
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def res_block(ip):
 
@@ -83,13 +88,12 @@ def create_gen(gen_ip, num_res_block):
 
 
 app = Flask(__name__)
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = '%@6aq47jjB6D!A9h'
-Session(app)
+# app.config['SESSION_TYPE'] = 'filesystem'
+# app.config["SESSION_PERMANENT"] = True
+# app.config['SECRET_KEY'] = '%@6aq47jjB6D!A9h'
+# Session(app)
 CORS(app)
 
-# Load your model
-# model = load_model('./models/gen_e_60.h5')
 
 @app.route('/image', methods=['POST'])
 def upload_image():
@@ -98,30 +102,21 @@ def upload_image():
         return jsonify({'error': 'No file part in the request'})
 
     file = request.files['file']
+    userName = request.form.get('userName')
 
-    # print('Hello world!', file=sys.stderr)
-
-    # user_id = session['user_id']
+    #fetch user id#########################
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username = ?", (userName,))
+    user = c.fetchone()
+    user_id=user[0]
+    conn.close()
+    #######################################
 
     img = Image.open(file)
     img = img.convert("RGB")
 
     im_x,im_y=img.size
-    # print("size =",im_x,im_y)
-    # im_x=128
-    # im_y=128
-    
-    # file_data = file.read()
-
-    # nparr = np.frombuffer(file_data, np.uint8)
-
-    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-    # img = img.resize((32, 32))
-    # X2 = img
-
-
-    # im_y,im_x=img.shape
     lr_ip = Input(shape=(im_x,im_y,3))
     generator = create_gen(lr_ip, num_res_block = 16)
     generator.summary()
@@ -151,6 +146,29 @@ def upload_image():
 
     processed_image.save(img_bytes, format='PNG')
 
+    #Insert image into database#######################
+    blob_data = img_bytes.getvalue()
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+
+    c.execute("SELECT COUNT(*) FROM images WHERE user_id = ? AND image_data = ?", (user_id, blob_data,))
+    count = c.fetchone()[0]
+    if(count>0):
+        message="error : Image already exists"
+    else:
+        try:
+            c.execute("INSERT INTO images (user_id, image_data) VALUES (?, ?)", (user_id, blob_data))
+            conn.commit()
+            message = {'message': 'Image inserted successfully'}
+        except Exception as e:
+            conn.rollback()
+            message = {'error': f'Error inserting image: {str(e)}'}
+        finally:
+            conn.close()
+
+    print(message)
+    ###################################################
+
     base64_bytes = b64encode(img_bytes.getvalue())
 
     base64_string = base64_bytes.decode('utf-8')
@@ -162,8 +180,35 @@ def upload_image():
     return json_data
     
 
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
+@app.route('/display', methods=['POST'])
+def display_images():
+    data = request.json
+    username = data.get('userName')
+
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("SELECT image_data FROM images INNER JOIN users ON images.user_id = users.id WHERE users.username = ?", (username,))
+    images = c.fetchall()
+    conn.close()
+
+    base64_images = [b64encode(image[0]).decode('utf-8') for image in images]
+
+    return jsonify(base64_images)
+
+@app.route('/delete_image', methods=['POST'])
+def delete_image():
+    data = request.json
+    image_to_delete = data.get('image')
+    image_to_delete_bytes = base64.b64decode(image_to_delete)
+    username = data.get('userName')  
+
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM images WHERE user_id = (SELECT id FROM users WHERE username = ?) AND image_data = ?", (username, image_to_delete_bytes,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Image deleted successfully'})
 
 
 @app.route('/register', methods=['POST'])
@@ -202,18 +247,25 @@ def login():
         entered_hashed_password = hash_password(password)
         
         if stored_hashed_password == entered_hashed_password:
-            session['user_id'] = user[0]  # Assuming the user ID is stored in the first column
-            return jsonify({'message': 'Login successful'})
+            # session['user_id'] = user[0]  # Assuming the user ID is stored in the first column
+
+            # user_id = session.get('user_id')
+            # print("User ID:", user_id)
+            # print(user[0])
+            return jsonify({'message': 'Login successful', 'user_name': username})
     
     return jsonify({'error': 'Invalid username or password'}), 401
 
-@app.route('/logout', methods=['GET'])
+@app.route('/logout', methods=['POST'])
 def logout():
-    if 'user_id' in session:
-        session.pop('user_id')  # Remove user ID from session
+    # user_id = session.get('user_id')
+    # print("User ID:", user_id)
+    # if 'user_id' in session:
+    #     session.pop('user_id')  # Remove user ID from session
     
-    # Optionally, you can clear the entire session if needed
-    session.clear()  # Clear all session data
+    # # Optionally, you can clear the entire session if needed
+    # session.clear()  # Clear all session data
+    # g.username=""
     
     return jsonify({'message': 'Logout successful'})
       

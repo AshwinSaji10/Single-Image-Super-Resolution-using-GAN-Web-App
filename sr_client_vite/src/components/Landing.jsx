@@ -30,7 +30,7 @@ function Landing({ setAuthenticated })
             console.log(response.data);
             // Redirect to home page or do something else on successful login
             setAuthenticated(true);
-            navigate("/home");
+            navigate("/home", { state: { userName: response.data.user_name } });
         } catch (error) {
             console.error("Error:", error);
             // Handle login failure (show error message, clear form, etc.)
