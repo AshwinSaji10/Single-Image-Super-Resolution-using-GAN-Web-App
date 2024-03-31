@@ -29,8 +29,6 @@
     gap:50px;
 }
 
-
-
 .btn
 {
     width:100px;
@@ -41,8 +39,21 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 300px;
+    /* justify-content: center; */
+    gap: 350px;
     margin-bottom: 50px;
+}
+.app-header h1
+{
+    font-family: 'Times New Roman';
+    font-size: 50px;
+    letter-spacing: 2px;
+    /* margin: 0; */
+}
+.app-header span
+{
+    color: #ff7200;
+    font-size: 60px;
 }
 .user-section
 {

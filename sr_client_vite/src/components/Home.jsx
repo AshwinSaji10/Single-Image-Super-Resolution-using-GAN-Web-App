@@ -39,7 +39,10 @@ function Home() {
             </div>
             <div className="app-container">
                 <div className="app-header">
-                    <h1>Single Image Super Resolution using GAN</h1>
+                <h1>
+                    Single Image
+                    <br /> <span>Super Resolution</span>{" "}
+                </h1>
                     <div className="user-section">
                         <div className="user-section-header">
                             <h2>{userName}</h2>

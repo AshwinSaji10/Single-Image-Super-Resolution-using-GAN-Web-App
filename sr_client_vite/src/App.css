@@ -21,11 +21,9 @@ input{
 
 button{
   border: none;
-  /* background-color: white; */
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  /* color:#7439db; */
 }
 
 /* Target the file input's button */

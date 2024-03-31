@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Landing.css";
 
-function Landing({ setAuthenticated }) 
-{
+function Landing({ setAuthenticated }) {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -40,7 +39,20 @@ function Landing({ setAuthenticated })
     return (
         <div className="Landing">
             <div className="carousel-container">
-                <h1>Single Image Super Resolution using GAN</h1>
+                {/* <h1>Single Image Super Resolution using GAN</h1> */}
+                <h1>
+                    Single Image
+                    <br /> <span>Super Resolution</span>{" "}
+                </h1>
+                <p>
+                    Super-resolution is a technique used in image processing to
+                    enhance the resolution<br/> of an image beyond its original
+                    resolution.<br/>It is particularly useful in improving the
+                    quality of low-resolution images
+                </p>
+                <Link to="/register" className="join-link">
+                    <button className="join-btn">Join Us</button>
+                </Link>
             </div>
             <form className="formbox-container" onSubmit={handleSubmit}>
                 <h1>Login</h1>
@@ -60,19 +72,14 @@ function Landing({ setAuthenticated })
                     onChange={handleChange}
                     required
                 />
-                <button id="sub_btn" type="submit">
+                <button className="login-btn" id="sub_btn" type="submit">
                     Login
                 </button>
-                <div className="links">
-                    {/* <Link to="/forget-password">
+                {/* <div className="links">
+                    <Link to="/forget-password">
                         <label className="right-label">Forget password?</label>
-                    </Link> */}
-                    <Link to="/register">
-                        <label className="right-label">
-                            New User? Register
-                        </label>
                     </Link>
-                </div>
+                </div> */}
             </form>
         </div>
     );

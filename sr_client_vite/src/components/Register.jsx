@@ -56,10 +56,10 @@ function Register() {
                         required
                     />
                 </div>
-                <button id="sub_btn" type="submit">
+                <button className="register-btn"id="sub_btn" type="submit">
                     Register
                 </button>
-                <Link to="/">
+                <Link to="/" className="login-link">
                     <label className="right-label">
                         Already have an account? Login here
                     </label>

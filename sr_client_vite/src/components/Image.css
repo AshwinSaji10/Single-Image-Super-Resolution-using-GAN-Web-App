@@ -97,7 +97,7 @@
   .image-container {
     width: 300px;
     height: 300px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     overflow: hidden; /* Ensure images don't overflow */
     display: flex;
     justify-content: center;

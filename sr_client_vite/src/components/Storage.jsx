@@ -47,7 +47,7 @@ function Storage({ userName }) {
 
     return (
         <div>
-            <h2>Images for {userName}:</h2>
+            {/* <h2>Images for {userName}:</h2> */}
             <div className="image-tile">
                 {images.map((image, index) => (
                     <div key={index} className="image-wrapper">
