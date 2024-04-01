@@ -10,6 +10,8 @@ function Landing({ setAuthenticated }) {
         password: "",
     });
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -32,6 +34,10 @@ function Landing({ setAuthenticated }) {
             navigate("/home", { state: { userName: response.data.user_name } });
         } catch (error) {
             console.error("Error:", error);
+            setErrorMessage("Invalid email or password!");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 2000); // Clear error message after 2 seconds
             // Handle login failure (show error message, clear form, etc.)
         }
     };
@@ -46,9 +52,11 @@ function Landing({ setAuthenticated }) {
                 </h1>
                 <p>
                     Super-resolution is a technique used in image processing to
-                    enhance the resolution<br/> of an image beyond its original
-                    resolution.<br/>It is particularly useful in improving the
-                    quality of low-resolution images
+                    enhance the resolution
+                    <br /> of an image beyond its original resolution.
+                    <br />
+                    It is particularly useful in improving the quality of
+                    low-resolution images
                 </p>
                 <Link to="/register" className="join-link">
                     <button className="join-btn">Join Us</button>
@@ -80,6 +88,9 @@ function Landing({ setAuthenticated }) {
                         <label className="right-label">Forget password?</label>
                     </Link>
                 </div> */}
+                {errorMessage && (
+                    <div className="error-message">{errorMessage}</div>
+                )}
             </form>
         </div>
     );

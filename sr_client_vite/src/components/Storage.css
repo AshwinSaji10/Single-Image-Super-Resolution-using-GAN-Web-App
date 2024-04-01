@@ -3,17 +3,21 @@
     display:flex;
     /* flex-wrap:; */
     flex-wrap: wrap;
+    max-width: 70vw;
     flex-direction: row;
+    /* gap:20px; */
+    /* align-items: space-between; */
+    /* justify-content: space-between; */
     gap:30px;
     /* gap:20px;
     flex-direction: row;
     width:70vw;
     height:50vh ; */
 }
-.image-layout button
+/* .image-layout button
 {
 
-}
+} */
 
 
 .image-wrapper/*button+ image*/

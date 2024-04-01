@@ -1,3 +1,4 @@
+/*
 .App{
   /* display: flex; */
   /*
@@ -10,8 +11,9 @@
   /* background-repeat: no-repeat;
   background-position: center; */
   /* margin:50px;
-  padding:10px; */
+  padding:10px; 
 }
+*/
 input{
   margin: 0.5rem 0;
   padding: 1rem;

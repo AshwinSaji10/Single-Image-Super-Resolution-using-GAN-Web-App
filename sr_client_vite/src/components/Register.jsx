@@ -3,7 +3,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
-function Register() {
+function Register() 
+{
+    // const [showModal, setShowModal] = useState(false);
+
+    // const closeModal = () => {
+    //     setShowModal(false); // Close modal
+    // };
+    const [notification, setNotification] = useState(null);
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -22,9 +30,18 @@ function Register() {
             .post("http://127.0.0.1:5000/register", formData)
             .then((response) => {
                 console.log(response.data);
+                // setShowModal(true);
+                setNotification({ type: "success", message: "Registration successful!" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 2000);
                 //console.log("success");
             })
             .catch((error) => {
+                setNotification({ type: "error", message: "Registration failed. Username already exists!" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 2000);
                 console.error("Error:", error);
                 // Handle error (e.g., show an error message)
             });
@@ -65,6 +82,22 @@ function Register() {
                     </label>
                 </Link>
             </form>
+            {/* {showModal && ( // Conditionally render modal based on showModal state
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>
+                            &times;
+                        </span>
+                        <h2>Registration Successful</h2>
+                        <p>You have successfully registered!</p>
+                    </div>
+                </div>
+            )} */}
+            {notification && (
+                <div className={`notification ${notification.type}`}>
+                    {notification.message}
+                </div>
+            )}
         </div>
     );
 }

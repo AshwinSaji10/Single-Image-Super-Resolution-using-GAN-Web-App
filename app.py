@@ -226,7 +226,7 @@ def register():
         conn.commit()
         return jsonify({'message': 'User registered successfully'})
     except sqlite3.IntegrityError:
-        return jsonify({'error': 'Username already exists'})
+        return jsonify({'error': 'Username already exists'}),401
     finally:
         conn.close()
 

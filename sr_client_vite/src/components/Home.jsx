@@ -39,10 +39,10 @@ function Home() {
             </div>
             <div className="app-container">
                 <div className="app-header">
-                <h1>
-                    Single Image
-                    <br /> <span>Super Resolution</span>{" "}
-                </h1>
+                    <h1>
+                        Single Image
+                        <br /> <span>Super Resolution</span>{" "}
+                    </h1>
                     <div className="user-section">
                         <div className="user-section-header">
                             <h2>{userName}</h2>
@@ -53,7 +53,11 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                {currentComponent === "view" ? <Storage userName={userName}/> : <Image userName={userName}/>}
+                {currentComponent === "view" ? (
+                    <Storage userName={userName} />
+                ) : (
+                    <Image userName={userName} />
+                )}
             </div>
         </div>
     );
