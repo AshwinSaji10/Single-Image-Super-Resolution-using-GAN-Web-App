@@ -10,6 +10,7 @@
     transition: opacity 0.3s ease, left 0.3s ease;  */
     display:flex;
     flex-direction: column;
+    position: fixed;
     /* border-radius: 100px; */
     /* border: 1px solid white; */
     /* background: linear-gradient(to top, rgb(0,0,0,0.8)50%, rgb(0,0,0,0.8)50%);
@@ -17,6 +18,7 @@
 
     background-color: rgba(0, 0, 0, 0.5); 
     backdrop-filter: blur(10px); 
+    z-index: 999;
     /* background: linear-gradient(to top, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.8) 50%); */
     
     min-height: 100vh;

@@ -3,13 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
-function Register() 
-{
-    // const [showModal, setShowModal] = useState(false);
-
-    // const closeModal = () => {
-    //     setShowModal(false); // Close modal
-    // };
+function Register() {
     const [notification, setNotification] = useState(null);
 
     const [formData, setFormData] = useState({
@@ -18,9 +12,10 @@ function Register()
     });
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [name]: value,
         });
     };
 
@@ -31,14 +26,20 @@ function Register()
             .then((response) => {
                 console.log(response.data);
                 // setShowModal(true);
-                setNotification({ type: "success", message: "Registration successful!" });
+                setNotification({
+                    type: "success",
+                    message: "Registration successful!",
+                });
                 setTimeout(() => {
                     setNotification(null);
                 }, 2000);
                 //console.log("success");
             })
             .catch((error) => {
-                setNotification({ type: "error", message: "Registration failed. Username already exists!" });
+                setNotification({
+                    type: "error",
+                    message: "Registration failed! Username already exists.",
+                });
                 setTimeout(() => {
                     setNotification(null);
                 }, 2000);
@@ -46,7 +47,6 @@ function Register()
                 // Handle error (e.g., show an error message)
             });
     };
-
     return (
         <div className="register">
             <form className="form-container" onSubmit={handleSubmit}>
@@ -57,6 +57,8 @@ function Register()
                         type="text"
                         name="email"
                         placeholder="Eg: abc@gmail.com"
+                        pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                        title="Please enter a valid email address"
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -68,12 +70,14 @@ function Register()
                         type="password"
                         name="password"
                         placeholder="********"
+                        minlength="8"
+                        maxlength="20"
                         value={formData.password}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <button className="register-btn"id="sub_btn" type="submit">
+                <button className="register-btn" id="sub_btn" type="submit">
                     Register
                 </button>
                 <Link to="/" className="login-link">
@@ -82,22 +86,14 @@ function Register()
                     </label>
                 </Link>
             </form>
-            {/* {showModal && ( // Conditionally render modal based on showModal state
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={closeModal}>
-                            &times;
-                        </span>
-                        <h2>Registration Successful</h2>
-                        <p>You have successfully registered!</p>
+            <div className="notify">
+                {notification && (
+                    <div className={`notification ${notification.type}`}>
+                        {notification.message}
                     </div>
-                </div>
-            )} */}
-            {notification && (
-                <div className={`notification ${notification.type}`}>
-                    {notification.message}
-                </div>
-            )}
+                )}
+            </div>
+            {/* {notification && (Popup.alert({notification.message}))} */}
         </div>
     );
 }

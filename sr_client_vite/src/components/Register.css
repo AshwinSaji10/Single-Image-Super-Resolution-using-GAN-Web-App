@@ -7,6 +7,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap:10px;
 
 }
 
@@ -114,7 +115,24 @@
 .login-link:hover {
     text-decoration: underline; /* Underline on hover */
 }
-.right-label
+/* .right-label
 {
 
+} */
+.notify
+{
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(10px); 
+    border-radius: 0px;
+    /* margin:20px; */
+    /* padding:5px; */
+}
+.notification.error
+{
+    color:red;
+}
+
+.notification.success
+{
+    color:green;
 }

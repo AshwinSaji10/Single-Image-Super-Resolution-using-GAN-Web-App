@@ -16,6 +16,7 @@ import io
 import base64
 from base64 import b64encode
 from json import dumps
+# from gevent.pywsgi import WSGIServer
 
 import sqlite3
 
@@ -270,7 +271,9 @@ def logout():
     return jsonify({'message': 'Logout successful'})
       
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
+    # http_server = WSGIServer(('', 5000), app)
+    # http_server.serve_forever()
 
 
 

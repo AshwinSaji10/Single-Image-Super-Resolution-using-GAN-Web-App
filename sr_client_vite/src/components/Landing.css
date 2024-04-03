@@ -124,3 +124,11 @@
   cursor: pointer;
 } */
 
+.error-message
+{
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(10px); 
+    border-radius: 0px;
+    color:red;
+}
+

@@ -45,7 +45,8 @@ function Home() {
                     </h1>
                     <div className="user-section">
                         <div className="user-section-header">
-                            <h2>{userName}</h2>
+                            {/* <h2>{userName.substring(0,8)+"..."}</h2> */}
+                            <h2>{(userName.substring(0,userName.indexOf("@"))).substring(0,15)}</h2>
                             <button onClick={handleLogout}>Logout</button>
                         </div>
                         <div className="user-section-image">
