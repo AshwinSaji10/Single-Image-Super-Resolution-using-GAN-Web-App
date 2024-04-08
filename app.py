@@ -118,15 +118,17 @@ def upload_image():
     img = img.convert("RGB")
 
     im_x,im_y=img.size
-    lr_ip = Input(shape=(im_x,im_y,3))
+    # print(im_x)
+    # print(im_y)
+    lr_ip = Input(shape=(im_x,im_x,3))
     generator = create_gen(lr_ip, num_res_block = 16)
     generator.summary()
 
 
     img=np.array(img)
     # img = img[:, :, ::-1].copy()
-    X1 = cv2.resize(img,(im_x,im_y), interpolation = cv2.INTER_AREA)
-    X = np.reshape(X1, (1,im_x,im_y, 3))
+    X1 = cv2.resize(img,(im_x,im_x), interpolation = cv2.INTER_AREA)
+    X = np.reshape(X1, (1,im_x,im_x, 3))
     X_batch = tf.cast(X, tf.float32)
 
 
@@ -142,6 +144,8 @@ def upload_image():
     # prediction = model.predict(img_array)
     output=Y[0] * 255
     processed_image = Image.fromarray((np.clip(output, 0, 255).astype(np.uint8)).astype(np.uint8))
+    if (im_x!=im_y):
+        processed_image = processed_image.resize((im_x*4,im_y*4),Image.LANCZOS)
 
     img_bytes = io.BytesIO()
 
