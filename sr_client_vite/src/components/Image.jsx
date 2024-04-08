@@ -76,7 +76,7 @@ function Image({ userName }) {
                     onClick={fileUploadHandler}
                     disabled={loading || !selectedFile}
                 >
-                    Upscale
+                    Upscale 4x
                 </button>
             </div>
             <div className="processed-image">

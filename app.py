@@ -130,7 +130,7 @@ def upload_image():
     X_batch = tf.cast(X, tf.float32)
 
 
-    generator.load_weights('./models/gen_e_60.h5')
+    generator.load_weights('./models/test_2000_divflickreffnet_gen_e_50.h5')
     Y = generator(X_batch/255)
 
     # img_array = np.array(img) / 255.0

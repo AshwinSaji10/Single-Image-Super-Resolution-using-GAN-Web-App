@@ -25,87 +25,89 @@
     border-radius: 50%;
     animation: rotate 1s linear infinite;
   } */
+.Image-section
+{
+  display:flex;
+  flex-direction: row;
+  gap:150px;
 
-  .Image-section
-  {
-    display:flex;
-    flex-direction: row;
-    gap:150px;
+}
+.original-image
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:25px;
+}
 
-  }
-  .original-image
-  {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap:25px;
-  }
+.file-selector
+{
+  margin:0;
+  /* margin-left: 50%; */
+  padding:0;
+  width:100px;
+}
 
-  .file-selector
-  {
-    margin:0;
-    /* margin-left: 50%; */
-    padding:0;
-    width:100px;
-  }
+.processed-image
+{
+  display: flex;
+  flex-direction: column;
+  gap:25px;
+  align-items: center;
+}
 
-  .processed-image
-  {
-    display: flex;
-    flex-direction: column;
-    gap:25px;
-    align-items: center;
-  }
-
-  .processed-image button
-  {
-    border-radius: 30px;
-  }
- 
-
-  .btn
-  {
-    width:100px;
-    height:35px;
-  } 
-
-  .btn-section
-  {
-    margin-top: auto;
-    display:flex;
-    flex-direction: column;
-  }
-
-  .btn-section img
-  {
-    height: 100px;
-    width:100px;
-  }
-  .btn-section button
-  {
-    height:35px;
-    width:120px;
-  }
-
-  /* .input-image,.output-image{
-    width:300px;
-    height:300px;
-    object-fit: cover;
-  } */
+.processed-image button
+{
+  border-radius: 30px;
+}
 
 
-  .image-container {
-    width: 300px;
-    height: 300px;
-    /* border: 1px solid #ccc; */
-    overflow: hidden; 
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-  }
-  
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.btn
+{
+  width:100px;
+  height:35px;
+} 
+
+.btn-section
+{
+  /* margin-top: auto; */
+  display:flex;
+  align-items: center;
+  gap:80px;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.btn-section img
+{
+  height: 100px;
+  width:100px;
+}
+.btn-section button
+{
+  height:35px;
+  width:120px;
+}
+
+/* .input-image,.output-image{
+  width:300px;
+  height:300px;
+  object-fit: cover;
+} */
+.image-container {
+  /* display:flex; */
+  width: 300px;
+  height: 300px;
+  /* border: 1px solid #ccc; */
+  overflow: hidden; 
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
