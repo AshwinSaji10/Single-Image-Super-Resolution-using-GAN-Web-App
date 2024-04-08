@@ -55,7 +55,7 @@ function Image({ userName }) {
     return (
         <div className="Image-section">
             <div className="original-image">
-                <div className="image-container">
+                <div className="img-container">
                     {!selectedFileURL && (
                         <img src={placeholderImage} alt="Placeholder Image" />
                     )}
@@ -80,7 +80,7 @@ function Image({ userName }) {
                 </button>
             </div>
             <div className="processed-image">
-                <div className="image-container">
+                <div className="img-container">
                     {processedImage ? (
                         <img
                             src={`data:image/jpeg;base64,${processedImage}`}

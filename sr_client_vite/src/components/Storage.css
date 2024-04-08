@@ -40,8 +40,8 @@
 .image-container/*image and delete button*/
 {
     gap: 10px;
-    width: 200px; 
-    height: 200px; 
+    width: 300px; 
+    height: 300px; 
     margin: 10px;
     /* overflow: hidden; */
     /* position: relative; */
@@ -58,7 +58,7 @@
 .delete-button {
     position: absolute;
     top: 5px; 
-    left:165px;
+    left:265px;
     /* right: 20px;  */
     visibility: hidden;
     background: url('delete.png') no-repeat; 
