@@ -1,5 +1,5 @@
 # Single-Image-Super-Resolution-using-GAN
-A web app that enables users to upscale images using a machine learning model trained through adversarial learning
+A web app that enables users to upscale images using a GAN based Super-Resolution model.
 ## Running the flask backend 
 Use the command: python app.py
 
